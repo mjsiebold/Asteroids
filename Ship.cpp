@@ -91,7 +91,7 @@ Ship::Ship(const Config &config) : GraphObj(), mConfig(config)
   mModelShapes.push_back(shipBase);
   mModelShapes.push_back(shipNozzle);
   mModelShapes.push_back(shipExhaust);
-  mExaustIndex = mModelShapes.size() - 1;
+  mExaustIndex = (int)(mModelShapes.size() - 1);
 
   mMaxVelocity = kMaxVelocityPerShipLen * mConfig.sizeRadius;
   mBoltSpeed = kBoltVelocityPerShipLen * mConfig.sizeRadius;

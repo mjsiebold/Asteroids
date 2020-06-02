@@ -1,4 +1,7 @@
 Debug/*
+x64/*
+.vs/
+*.user
 *.sdf
 *.suo
 *.opensdf

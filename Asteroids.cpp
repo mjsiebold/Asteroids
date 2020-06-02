@@ -7,10 +7,10 @@
 #include "GameBox.h"
 #include "Ship.h"
 
-static const int kMaxFps = 60;
+static const int kMaxFps = 100;
 static const float kShipRadius = 40.0F;
 static const int kNumPlayers = 2;
-static const int kScreenMargin = 8;
+static const int kScreenMargin = 100;
 static const float kRespawnSeconds = 2;
 
 class HeadToHeadPlayer
@@ -123,7 +123,7 @@ static void headToHeadGame()
     Ship::Config config;
     
     config.baseColor = player.getTeamColor();
-    config.sizeRadius = kShipRadius;
+    config.sizeRadius = (float)(sf::VideoMode::getDesktopMode().width / 40);
     config.headToHead = true;
     auto ship = std::make_shared<Ship>(config);
     sf::Vector2f pos((float)(window.getSize().x * (teamIndex + 1) / (kNumPlayers + 1)), (float)(window.getSize().y / 2));

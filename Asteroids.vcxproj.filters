@@ -6,6 +6,7 @@
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Bolt.cpp" />
     <ClCompile Include="Fragment.cpp" />
+    <ClCompile Include="GameBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
