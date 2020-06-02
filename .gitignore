@@ -1,6 +1,7 @@
+Release/*
 Debug/*
 x64/*
-.vs/
+.vs/*
 *.user
 *.sdf
 *.suo
