@@ -99,18 +99,18 @@ static void headToHeadGame()
   GameBox gameBox;
 
   HeadToHeadPlayer::Config config[kNumPlayers];
-  config[0].teamColor       = sf::Color::Green;
-  config[0].leftKey         = sf::Keyboard::Left;
-  config[0].rightKey        = sf::Keyboard::Right;
-  config[0].thrustKey       = sf::Keyboard::Up;
-  config[0].fireKey         = sf::Keyboard::Space;
+  config[0].teamColor       = sf::Color::Red;
+  config[0].leftKey         = sf::Keyboard::Z;
+  config[0].rightKey        = sf::Keyboard::X;
+  config[0].thrustKey       = sf::Keyboard::S;
+  config[0].fireKey         = sf::Keyboard::Tab;
   config[0].respawnSeconds  = kRespawnSeconds;
-  config[1].teamColor       = sf::Color::Red;
-  config[1].leftKey         = sf::Keyboard::Z;
-  config[1].rightKey        = sf::Keyboard::X;
-  config[1].thrustKey       = sf::Keyboard::S;
-  config[1].fireKey         = sf::Keyboard::LShift;
-  config[1].respawnSeconds  = kRespawnSeconds;
+  config[1].teamColor = sf::Color::Green;
+  config[1].leftKey = sf::Keyboard::Left;
+  config[1].rightKey = sf::Keyboard::Right;
+  config[1].thrustKey = sf::Keyboard::Up;
+  config[1].fireKey = sf::Keyboard::Slash;
+  config[1].respawnSeconds = kRespawnSeconds;
 
   std::vector<HeadToHeadPlayer> players =
   {

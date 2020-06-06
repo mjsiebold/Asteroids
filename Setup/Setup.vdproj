@@ -19,6 +19,12 @@
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_F032D9ED68CE47779BAA91B60C15C013"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -83,6 +89,11 @@
                     "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
                     "ProductCode" = "8:.NETFramework,Version=v4.7.2"
                     }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Visual.C++.14.0.x64"
+                    {
+                    "Name" = "8:Visual C++ \"14\" Runtime Libraries (x64)"
+                    "ProductCode" = "8:Microsoft.Visual.C++.14.0.x64"
+                    }
                 }
             }
         }
@@ -106,6 +117,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F032D9ED68CE47779BAA91B60C15C013"
+            {
+            "SourcePath" = "8:..\\ReadMe.txt"
+            "TargetName" = "8:ReadMe.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_1A520DBD319C45BE9D5A103D41DD5637"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -163,7 +194,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Asteroids"
         "ProductCode" = "8:{7EE4F10C-D239-4B40-AC0C-D00208963BA3}"
-        "PackageCode" = "8:{33B438F4-389A-4331-88E9-72B00F8399BA}"
+        "PackageCode" = "8:{F481B567-3BE0-4F35-8EC9-A13EDB7EF0A0}"
         "UpgradeCode" = "8:{87BAF67F-F725-4462-A7F1-83BCFF7C0B35}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -285,14 +316,28 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_5BD6BB8EA4EB4833AE960784765F048B"
             {
-            "Name" = "8:Shortcut to Primary Output from Asteroids (Active)"
+            "Name" = "8:Asteriods"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_E7C1F5568B2F492A8D39B889DB9471B2"
-            "Folder" = "8:_1A520DBD319C45BE9D5A103D41DD5637"
+            "Folder" = "8:_702085DF9A2645BF86FF5997FD7D24AA"
+            "WorkingFolder" = "8:_1A520DBD319C45BE9D5A103D41DD5637"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_C117FA8FD58F43F2A9176EE1EB62DCEC"
+            {
+            "Name" = "8:Asteriods"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_E7C1F5568B2F492A8D39B889DB9471B2"
+            "Folder" = "8:_649A7B29C99545E7BF740B15E3825CF0"
             "WorkingFolder" = "8:_1A520DBD319C45BE9D5A103D41DD5637"
             "Icon" = "8:"
             "Feature" = "8:"
