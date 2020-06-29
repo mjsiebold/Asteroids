@@ -20,7 +20,6 @@ public:
   virtual void update(sf::RenderWindow &win);
 
   void add(std::shared_ptr<GraphObj> obj);
-  void explode(std::shared_ptr<GraphObj> obj);
   bool isPresent(std::shared_ptr<GraphObj> obj);
 
 protected:

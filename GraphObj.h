@@ -45,6 +45,15 @@ static float randFloat()
   return static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 }
 
+static int randInt(int min, int max)
+{
+  if (max > min)
+  {
+    return rand() % (max - min + 1) + min;
+  }
+  return min;
+}
+
 static float randFloat(float min, float max)
 {
   return min + randFloat() * (max - min);
@@ -73,6 +82,8 @@ public:
   void kill() { mIsAlive = false; }
   void revive() { mIsAlive = true; }
 
+  virtual std::list<std::shared_ptr<GraphObj>> explode() { return std::list<std::shared_ptr<GraphObj>>(); }
+
   virtual bool explodesOnDeath() const { return false; }
 
   virtual CollisionEnvelope getCollisionEnvelope() const
@@ -95,6 +106,7 @@ public:
 
   sf::Vector2f getPosition() const { return mCenterPt; }
   sf::Vector2f getLinearVelocity() const { return mLinearVelocity; }
+  float getRadialVelocity() const { return mRadialVelocity; }
   float getAngle() const { return mAngleRadians; }
   sf::Vector2f getDirectionVector() const
   {

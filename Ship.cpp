@@ -16,7 +16,7 @@ static const float kMaxFireRate = 3;
 static const float kMaxHead2HeadFireRate = 1;
 static sf::Color kBoltColor(0x80, 0xFF, 0xFF);
 
-Ship::Ship(const Config &config) : GraphObj(), mConfig(config)
+Ship::Ship(const Config &config) : VolatileObj(), mConfig(config)
 {
   float wingEndX = -mConfig.sizeRadius * 0.5F;
   float wingEndY = mConfig.sizeRadius * 0.87F;

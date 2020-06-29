@@ -7,10 +7,10 @@
 #ifndef SHIP_H_2020_05_30
 #define SHIP_H_2020_05_30
 
-#include "GraphObj.h"
+#include "VolatileObj.h"
 #include "Bolt.h"
 
-class Ship : public GraphObj
+class Ship : public VolatileObj
 {
 public:
 

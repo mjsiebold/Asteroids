@@ -11,29 +11,6 @@
 #include <stdlib.h>
 #include <unordered_map>
 
-static const int kMinExplosionFragments = 15;
-static const int kMaxExplosionFragments = 30;
-static const float kMinExplosionSpeed =  500;
-static const float kMaxExplosionSpeed = 1000;
-static const float kMinExplosionRadialSpeed = 0;
-static const float kMaxExplosionRadialSpeed = 2 * PI * 6;
-static const float kMinBodyFragmentSize = 5;
-static const float kMaxBodyFragmentSize = 50;
-static const float kMinFireFragmentSize = 5;
-static const float kMaxFireFragmentSize = 20;
-static const float kMinFragmentLifeSeconds = 0.5;
-static const float kMaxFragmentLifeSeconds = 2;
-static const sf::Color kFireColor = kOrange;
-
-static int randInt(int min, int max)
-{
-  if (max > min)
-  {
-    return rand() % (max - min) + min;
-  }
-  return min;
-}
-
 void GameBox::checkForCollisions(GraphObj::UpdateContext *context)
 {
   // TODO: use a more efficient method to check
@@ -88,7 +65,7 @@ void GameBox::checkForCollisions(GraphObj::UpdateContext *context)
       ++i;
     }
   }
-}
+} 
 
 void GameBox::update(sf::RenderWindow &win)
 {
@@ -103,6 +80,7 @@ void GameBox::update(sf::RenderWindow &win)
   GraphObj::UpdateContext context;
   context.spaceLimits = win.getSize();
 
+  std::list <std::shared_ptr<GraphObj>> totalEjecta;
   auto objIter = mObjects.begin();
   while (objIter != mObjects.end())
   {
@@ -118,7 +96,8 @@ void GameBox::update(sf::RenderWindow &win)
       {
         if (obj->explodesOnDeath())
         {
-          explode(obj);
+          auto ejecta = obj->explode();
+          totalEjecta.splice(totalEjecta.end(), ejecta);
         }
       }
       // Remove inactive objects
@@ -131,6 +110,8 @@ void GameBox::update(sf::RenderWindow &win)
       ++objIter;
     }
   }
+
+  mObjects.splice(mObjects.end(), totalEjecta);
 
   checkForCollisions(&context);
 
@@ -148,45 +129,6 @@ void GameBox::add(std::shared_ptr<GraphObj> obj)
   if (obj)
   {
     mObjects.push_back(obj);
-  }
-}
-
-void GameBox::explode(std::shared_ptr<GraphObj> obj)
-{
-  if (obj)
-  {
-    int fragments = randInt(kMinExplosionFragments, kMaxExplosionFragments);
-    for (int fragIndex = 0; fragIndex < fragments; fragIndex++)
-    {
-      float fragSpeed = randFloat(kMinExplosionSpeed, kMaxExplosionSpeed);
-      float fragRadialSpeed = randFloat(kMinExplosionRadialSpeed, kMaxExplosionRadialSpeed);
-      float angle = randFloat(0, 2 * PI);
-
-      Fragment::Config fragmentConfig;
-      fragmentConfig.lifespanSeconds = randFloat(kMinFragmentLifeSeconds, kMaxFragmentLifeSeconds);
-      if (rand() % 3 == 0)
-      {
-        fragmentConfig.color = obj->getMainColor();
-        fragmentConfig.size = randFloat(kMinBodyFragmentSize, kMaxBodyFragmentSize);
-        fragmentConfig.isFire = false;
-      }
-      else
-      {
-        fragmentConfig.color = kFireColor;
-        fragmentConfig.size = randFloat(kMinFireFragmentSize, kMaxFireFragmentSize);
-        fragmentConfig.isFire = true;
-      }
-
-      auto fragment = std::make_shared<Fragment>(fragmentConfig);
-      fragment->setPosition(obj->getPosition());
-      fragment->setOrientation(angle);
-      fragment->setRadialVelocity(fragRadialSpeed);
-      fragment->setLinearVelocity(obj->getLinearVelocity() + 
-        fragment->getDirectionVector() * fragSpeed);
-
-      mObjects.push_back(fragment);
-    }
-    obj->kill();
   }
 }
 

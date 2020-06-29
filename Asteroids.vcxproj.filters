@@ -1,14 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Asteroids.cpp" />
     <ClCompile Include="GraphObj.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Bolt.cpp" />
     <ClCompile Include="Fragment.cpp" />
     <ClCompile Include="GameBox.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="VolatileObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="asteroid_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Asteroids.rc" />
   </ItemGroup>
 </Project>
