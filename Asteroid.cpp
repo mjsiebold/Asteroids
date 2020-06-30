@@ -13,10 +13,27 @@ static const int kMaxAsteroidPoints = 12;
 static const float kMinAngleRatio = -0.33F;
 static const float kMaxAngleRatio = 0.33F;
 
-static const float kMinSize = 25;
 static const float kMaxChildSizeRatio = 0.75F;
 static const float kMinChildSizeRatio = 0.1F;
 static const int kMaxChildTries = 15;
+
+static const float kMaxKnockSpeed = 2 * PI * 3;
+
+const sf::Color Asteroid::kDefaultColor(165, 42, 42);
+
+void Asteroid::knockAsteriod(float minLinearSpeed, float maxLinearSpeed)
+{
+  KnockConfig config;
+
+  config.minLinearSpeed = minLinearSpeed;
+  config.maxLinearSpeed = maxLinearSpeed;
+  config.maxRadialSpeed = kMaxKnockSpeed;
+  if (mCollisionRadius > 0)
+  {
+    config.maxRadialSpeed *= (mMinChildSize / mCollisionRadius);
+  }
+  knockRand(config);
+}
 
 Asteroid::Asteroid(const Config &config) : VolatileObj()
 {
@@ -48,16 +65,32 @@ Asteroid::Asteroid(const Config &config) : VolatileObj()
     nextAngle += deltaAngle;
   }
   body[(int)(pointCount + 1)].position = body[1].position;
+  sf::Color darkColor(config.color.r / 2, config.color.g / 2, config.color.b / 2);
   for (int i = 0; i < totalPointCount; i++)
   {
-    body[i].color = config.color;
+    if (i > 0)
+    {
+      body[i].color = darkColor;
+    }
+    else
+    {
+      body[i].color = config.color;
+    }
   }
   mMainColor = config.color;
   mModelShapes.push_back(body);
+  mMinChildSize = config.minChildSize;
   
   // TODO: larger asteroids, with large variances in side radius,
   //       may need something more precise when detecting a collision...
   mCollisionRadius = (float)size;
+
+  if (mMinChildSize > 0)
+  {
+    float sizeRatio = (mCollisionRadius / mMinChildSize);
+    mMass = sizeRatio * sizeRatio;
+    mExplosionRatio = sizeRatio;
+  }
 
   mExplodeStyle = ExplodeStyle::FireOnly;
 }
@@ -67,34 +100,39 @@ std::list<std::shared_ptr<GraphObj>> Asteroid::explode()
   // Try breaking up into an approximately similar volume
   std::list<std::shared_ptr<GraphObj>> ejecta;
 
-  float remainingVolume = mCollisionRadius * mCollisionRadius;
-
-  Asteroid::Config config;
-  config.color = mMainColor;
-  config.minSize = mCollisionRadius * kMinChildSizeRatio;
-  config.maxSize = mCollisionRadius * kMaxChildSizeRatio;
-
-  for (int tries = 0; tries < kMaxChildTries; tries++)
+  if (mChildrenAllowed)
   {
-    auto obj = std::make_shared<Asteroid>(config);
-    float size = obj->mCollisionRadius;
-    if (size < kMinSize)
-    {
-      break;
-    }
-    float volume = size * size;
-    remainingVolume -= volume;
-    if (remainingVolume < 0)
-    {
-      break;
-    }
-    throwObjRand(obj, ThrowStyle::Breakup);
-    // Space the objects out 
-    obj->setPosition(obj->getPosition() + obj->getDirectionVector() * (mCollisionRadius / 2));
+    float remainingVolume = mCollisionRadius * mCollisionRadius;
 
-    // Reduce the rotation by the size
-    obj->setRadialVelocity(obj->getRadialVelocity() * (kMinSize / size));
-    ejecta.push_back(obj);
+    Asteroid::Config config;
+    config.color = mMainColor;
+    config.minSize = mCollisionRadius * kMinChildSizeRatio;
+    config.maxSize = mCollisionRadius * kMaxChildSizeRatio;
+    config.minChildSize = mMinChildSize;
+
+    for (int tries = 0; tries < kMaxChildTries; tries++)
+    {
+      auto obj = std::make_shared<Asteroid>(config);
+      float size = obj->mCollisionRadius;
+      if (size < mMinChildSize)
+      {
+        break;
+      }
+      float volume = size * size;
+      remainingVolume -= volume;
+      if (remainingVolume < 0)
+      {
+        break;
+      }
+      throwObjRand(obj, ThrowStyle::Breakup);
+      // Space the objects out 
+      obj->setPosition(obj->getPosition() + obj->getDirectionVector() * (mCollisionRadius / 2));
+
+      // Reduce the rotation by the size
+      obj->setRadialVelocity(obj->getRadialVelocity() * (mMinChildSize / size));
+      obj->setTeam(getTeam());
+      ejecta.push_back(obj);
+    }
   }
 
   auto explodeEjecta = VolatileObj::explode();

@@ -96,6 +96,7 @@ bool GraphObj::collidesWith(const GraphObj &obj, UpdateContext *context)
     sf::Vector2f delta = mCenterPt - obj.mCenterPt;
     if (context)
     {
+#ifdef WRAP_COLLISION
       // Assume wrapping, in which case if we're over a half span away,
       // we're closer to the wrapped distance.
       if (delta.x > context->spaceLimits.x / 2)
@@ -106,6 +107,7 @@ bool GraphObj::collidesWith(const GraphObj &obj, UpdateContext *context)
       {
         delta.y -= context->spaceLimits.y;
       }
+#endif
     }
     float distanceSq = delta.x * delta.x + delta.y * delta.y;
     float minDistance = mCollisionRadius + obj.mCollisionRadius;
@@ -117,4 +119,30 @@ bool GraphObj::collidesWith(const GraphObj &obj, UpdateContext *context)
   return false;
 }
 
+void GraphObj::knockRand(GraphObj::KnockConfig config)
+{
+  float fragSpeed = 0;
+  float fragRadialSpeed = 0;
+  float angle = 0;
+
+  float knockLinearSpeed = randFloat(config.minLinearSpeed / mMass, config.maxLinearSpeed / mMass);
+  if (rand() % 2)
+  {
+    knockLinearSpeed *= -1;
+  }
+  float knockRadialSpeed = randFloat(config.minRadialSpeed / mMass, config.maxRadialSpeed / mMass);
+  float knockAngle = randFloat(0, 2 * PI);
+
+  AngleFactors angleFactors(knockAngle);
+  sf::Vector2f knockUnitVector(angleFactors.cosFactor, angleFactors.sinFactor);
+
+  mLinearVelocity += knockUnitVector * knockLinearSpeed;
+  mCenterPt += knockUnitVector * config.jumpDistance;
+  mRadialVelocity += knockRadialSpeed;
+
+  if (config.forceOrientation)
+  {
+    setOrientation(knockAngle);
+  }
+}
 

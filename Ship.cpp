@@ -12,8 +12,9 @@ static const float kControlThrustShipLenPerSecSquared = 4.0F;
 static const float kMaxVelocityPerShipLen = 10;
 static const float kBoltVelocityPerShipLen = 20;
 static const float kBoltSizeFraction = 0.33F;
-static const float kMaxFireRate = 3;
+static const float kMaxFireRate = 5;
 static const float kMaxHead2HeadFireRate = 1;
+static const float kDefaultExplosionRatio = 5;
 static sf::Color kBoltColor(0x80, 0xFF, 0xFF);
 
 Ship::Ship(const Config &config) : VolatileObj(), mConfig(config)
@@ -105,6 +106,7 @@ Ship::Ship(const Config &config) : VolatileObj(), mConfig(config)
   {
     mFirePeriod = 1.0F / kMaxHead2HeadFireRate;
   }
+  mExplosionRatio = kDefaultExplosionRatio;
 }
 
 void Ship::render(sf::RenderWindow &win)

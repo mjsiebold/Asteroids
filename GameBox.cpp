@@ -132,6 +132,23 @@ void GameBox::add(std::shared_ptr<GraphObj> obj)
   }
 }
 
+void GameBox::remove(std::shared_ptr<GraphObj> obj)
+{
+  if (obj)
+  {
+    for (std::list<std::shared_ptr<GraphObj>>::iterator nextObj = mObjects.begin();
+      nextObj != mObjects.end(); 
+      ++nextObj)
+    {
+      if (obj == *nextObj)
+      {
+        mObjects.erase(nextObj);
+        break;
+      }
+    }
+  }
+}
+
 bool GameBox::isPresent(std::shared_ptr<GraphObj> obj)
 {
   for (auto &nextObj : mObjects)

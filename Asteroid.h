@@ -13,10 +13,14 @@ class Asteroid : public VolatileObj
 {
 public:
 
+  static constexpr float kDefaultMinChildSize = 25.0F;
+  static const sf::Color kDefaultColor;
+ 
   struct Config
   {
     float maxSize = 0;
     float minSize = 0;
+    float minChildSize = kDefaultMinChildSize;
     sf::Color color;
   };
 
@@ -26,10 +30,18 @@ public:
 
   std::list<std::shared_ptr<GraphObj>> explode() override;
 
-  //void update(sf::Time deltaT, UpdateContext *context) override;
+  void knockAsteriod(float minLinearSpeed, float maxLinearSpeed);
+
+  void disintegrate() override
+  {
+    mChildrenAllowed = false;
+    kill();
+  }
 
 private:
+  bool mChildrenAllowed = true;
   float mRemainingLifeSeconds = 0;
+  float mMinChildSize = 0;
 };
 
 #endif

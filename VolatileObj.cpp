@@ -9,12 +9,12 @@
 #include "VolatileObj.h"
 #include "Fragment.h"
 
-static const int kMinExplosionFragments = 15;
-static const int kMaxExplosionFragments = 30;
+static const int kMinExplosionFragments = 3;
+static const int kMaxExplosionFragments = 7;
 static const float kMinExplosionSpeed = 500;
 static const float kMaxExplosionSpeed = 1000;
-static const float kMinBreakupSpeed = 50;
-static const float kMaxBreakupSpeed = 250;
+static const float kMinBreakupSpeed = 150;
+static const float kMaxBreakupSpeed = 500;
 static const float kMinExplosionRadialSpeed = 0;
 static const float kMaxExplosionRadialSpeed = 2 * PI * 6;
 static const float kMinBreakupRadialSpeed = 0;
@@ -29,40 +29,33 @@ static const sf::Color kFireColor = kOrange;
 
 void VolatileObj::throwObjRand(std::shared_ptr<GraphObj> obj, ThrowStyle throwStyle)
 {
-  float fragSpeed = 0;
-  float fragRadialSpeed = 0;
-  float angle = 0;
+  KnockConfig knock;
 
   if (throwStyle == ThrowStyle::Breakup)
   {
-    fragSpeed = randFloat(kMinBreakupSpeed, kMaxBreakupSpeed);
-    fragRadialSpeed = randFloat(kMinBreakupRadialSpeed, kMaxBreakupRadialSpeed);
-    angle = randFloat(0, 2 * PI);
+    knock.minLinearSpeed = kMinBreakupSpeed;
+    knock.maxLinearSpeed = kMaxBreakupSpeed;
+    knock.minRadialSpeed = kMinBreakupRadialSpeed;
+    knock.maxRadialSpeed = kMaxBreakupRadialSpeed;
   }
   else
   {
-    fragSpeed = randFloat(kMinExplosionSpeed, kMaxExplosionSpeed);
-    fragRadialSpeed = randFloat(kMinExplosionRadialSpeed, kMaxExplosionRadialSpeed);
-    angle = randFloat(0, 2 * PI);
-  }
-
-  if (randInt(0, 1))
-  {
-    fragRadialSpeed *= -1;
+    knock.minLinearSpeed = kMinExplosionSpeed;
+    knock.maxLinearSpeed = kMaxExplosionSpeed;
+    knock.minRadialSpeed = kMinExplosionRadialSpeed;
+    knock.maxRadialSpeed = kMaxExplosionRadialSpeed;
   }
 
   obj->setPosition(getPosition());
-  obj->setOrientation(angle);
-  obj->setRadialVelocity(fragRadialSpeed);
-  obj->setLinearVelocity(getLinearVelocity() +
-    obj->getDirectionVector() * fragSpeed);
+  obj->setLinearVelocity(getLinearVelocity());
+  obj->knockRand(knock);
 }
 
 std::list<std::shared_ptr<GraphObj>> VolatileObj::explode()
 {
   std::list<std::shared_ptr<GraphObj>> ejecta;
 
-  int fragments = randInt(kMinExplosionFragments, kMaxExplosionFragments);
+  int fragments = randInt(kMinExplosionFragments * mExplosionRatio, kMaxExplosionFragments * mExplosionRatio);
   for (int fragIndex = 0; fragIndex < fragments; fragIndex++)
   {
     Fragment::Config fragmentConfig;
@@ -82,7 +75,7 @@ std::list<std::shared_ptr<GraphObj>> VolatileObj::explode()
     }
 
     auto fragment = std::make_shared<Fragment>(fragmentConfig);
-    throwObjRand(fragment);
+    throwObjRand(fragment, ThrowStyle::Explosion);
 
     ejecta.push_back(fragment);
   }

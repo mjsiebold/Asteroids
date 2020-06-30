@@ -82,6 +82,9 @@ public:
   void kill() { mIsAlive = false; }
   void revive() { mIsAlive = true; }
 
+  // A version of kill that destroys without spawning children
+  virtual void disintegrate() { kill(); }
+
   virtual std::list<std::shared_ptr<GraphObj>> explode() { return std::list<std::shared_ptr<GraphObj>>(); }
 
   virtual bool explodesOnDeath() const { return false; }
@@ -103,11 +106,14 @@ public:
   void setLinearVelocity(sf::Vector2f linearVelocity) { mLinearVelocity = linearVelocity; }
   void setRadialVelocity(float radialVelocity) { mRadialVelocity = radialVelocity; }
   void setTeam(int team) { mTeam = team; }
+  void setMass(float mass) { mMass = mass; }
 
   sf::Vector2f getPosition() const { return mCenterPt; }
   sf::Vector2f getLinearVelocity() const { return mLinearVelocity; }
   float getRadialVelocity() const { return mRadialVelocity; }
   float getAngle() const { return mAngleRadians; }
+  float getMass() const { return mMass;  }
+  
   sf::Vector2f getDirectionVector() const
   {
     AngleFactors angleFactors(mAngleRadians);
@@ -118,6 +124,19 @@ public:
   sf::Color getMainColor() { return mMainColor; }
 
   bool canCollide() const { return mCollisionRadius > 0; }
+
+  struct KnockConfig
+  {
+    float minLinearSpeed = 0;
+    float maxLinearSpeed = 0;
+    float minRadialSpeed = 0;
+    float maxRadialSpeed = 0;
+    float jumpDistance = 0; // The amount to "jump" in the direction of the knock
+    bool forceOrientation = true; // Rotate the object in the direction of the knock
+  };
+
+  // Hit the object with a random delta linear and radial velocity.
+  void knockRand(KnockConfig config);
 
 protected:
 
@@ -151,6 +170,7 @@ protected:
   sf::Vector2f mCenterPt;
   float mAngleRadians = 0;
   float mCollisionRadius = 0;
+  float mMass = 1;
   bool mIsAlive = true;
   sf::Color mMainColor = kDarkGray;
 

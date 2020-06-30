@@ -16,6 +16,9 @@ public:
 
   virtual std::list<std::shared_ptr<GraphObj>> explode();
 
+  void setExplosionRatio(float ratio) { mExplosionRatio = ratio; }
+  float getExplosionRatio() { return mExplosionRatio; }
+
 protected:
   enum class ThrowStyle 
   {
@@ -30,6 +33,8 @@ protected:
     FireOnly
   };
   ExplodeStyle mExplodeStyle = ExplodeStyle::FireAndFragments;
+
+  float mExplosionRatio = 1; // Larger number for more explosion effects
 };
 
 #endif

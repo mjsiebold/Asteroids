@@ -9,6 +9,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="VolatileObj.cpp" />
+    <ClCompile Include="SinglePlayerGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
